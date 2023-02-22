@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import {Product} from "../model/Product";
+import {FormControl, FormGroup, Validators} from "@angular/forms";
+declare var $:any;
+
+
 
 @Component({
   selector: 'app-product',
@@ -8,7 +12,12 @@ import {Product} from "../model/Product";
 })
 export class ProductComponent implements OnInit {
 
-  product:Product = new Product(0,"0","0",0);
+  formCreate : FormGroup = new FormGroup({
+    id: new FormControl("0", [Validators.required,Validators.max(50)]),
+    name: new FormControl("0"),
+    img: new FormControl("0"),
+    price: new FormControl("0"),
+  })
 
   products: Product[] = [
     new Product(1,"Người yêu Mạnh","https://tinhayvip.com/wp-content/uploads/2022/06/vsbg-5.jpg",300),
@@ -19,8 +28,9 @@ export class ProductComponent implements OnInit {
   }
 
   createProduct(){
-    let productNew = new Product(this.product.id,this.product.name,this.product.img,this.product.price);
-    this.products.push(productNew);
+    this.products.push(this.formCreate.value)
+    $('#myModal').modal('hide');
+
   }
 
 }
